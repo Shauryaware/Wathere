@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Add a facility</h1>
+<p class="muted">For this prototype, this form is not protected by an admin login. Do not expose it publicly without adding authentication.</p>
+<form class="form-card" method="post">
+  <label>Facility name<input name="name" required></label>
+  <label>Type
+    <select name="facility_type" required><option value="Water">Drinking water</option><option value="Toilet">Public toilet</option></select>
+  </label>
+  <label>Address / area<input name="address" required></label>
+  <div class="two-col">
+    <label>Latitude<input name="latitude" type="number" step="any" required></label>
+    <label>Longitude<input name="longitude" type="number" step="any" required></label>
+  </div>
+  <label>Operational status
+    <select name="operational_status"><option>Unknown</option><option>Operational</option><option>Non-operational</option></select>
+  </label>
+  <label>Cleanliness score (0–100)<input name="cleanliness_score" type="number" min="0" max="100" value="50" required></label>
+  <label>Water quality
+    <select name="water_quality"><option>Not tested</option><option>Test passed (enter only with test evidence)</option><option>Test failed (enter only with test evidence)</option><option>Not applicable</option></select>
+  </label>
+  <label>Notes<textarea name="notes" rows="3"></textarea></label>
+  <button type="submit">Save facility</button>
+</form>
+{% endblock %}

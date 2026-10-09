@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<a class="back" href="{{ url_for('facility_detail', facility_id=facility.id) }}">← Back to facility</a>
+<h1>Report an issue</h1>
+<p class="muted">Facility: {{ facility.name }}</p>
+<form class="form-card" method="post" enctype="multipart/form-data">
+  <label>Issue type
+    <select name="issue_type" required>
+      <option value="">Choose an issue</option>
+      <option>Not working</option><option>Dirty or unhygienic</option>
+      <option>No running water</option><option>Leakage or damage</option>
+      <option>Water quality concern</option><option>Incorrect location/details</option>
+      <option>Other</option>
+    </select>
+  </label>
+  <label>Description
+    <textarea name="description" rows="4" required placeholder="Describe what you observed"></textarea>
+  </label>
+  <label>Photo (optional, max 5 MB)
+    <input type="file" name="image" accept=".png,.jpg,.jpeg,.webp">
+  </label>
+  <button type="submit">Submit report</button>
+</form>
+{% endblock %}

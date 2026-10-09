@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">PUBLIC FACILITY DISCOVERY</p>
+  <h1>Find water. Find toilets. Know before you go.</h1>
+  <p>Search facilities and review their reported cleanliness, operating status, and information freshness.</p>
+</section>
+<form class="searchbar" method="get">
+  <input type="search" name="q" value="{{ q }}" placeholder="Search by name or area">
+  <select name="type">
+    <option value="All" {% if selected_type == 'All' %}selected{% endif %}>All facilities</option>
+    <option value="Water" {% if selected_type == 'Water' %}selected{% endif %}>Drinking water</option>
+    <option value="Toilet" {% if selected_type == 'Toilet' %}selected{% endif %}>Public toilets</option>
+  </select>
+  <button type="submit">Search</button>
+</form>
+<div class="section-heading">
+  <h2>Facilities</h2>
+  <a href="{{ url_for('add_facility') }}">+ Add facility</a>
+</div>
+<div class="grid">
+{% for f in facilities %}
+  <article class="card">
+    <div class="card-top">
+      <span class="type-tag">{{ "DRINKING WATER" if f.facility_type == "Water" else "PUBLIC TOILET" }}</span>
+      <span class="status">{{ f.operational_status }}</span>
+    </div>
+    <h3>{{ f.name }}</h3>
+    <p class="muted">{{ f.address }}</p>
+    <div class="metrics">
+      <div><strong>{{ f.cleanliness_score }}/100</strong><span>Cleanliness</span></div>
+      <div><strong>{{ f.confidence }}%</strong><span>Info confidence*</span></div>
+    </div>
+    <p class="small">Last verified: {{ f.last_verified }} · {{ f.freshness }}</p>
+    {% if f.facility_type == "Water" %}<p class="small">Water quality: {{ f.water_quality }}</p>{% endif %}
+    <a class="text-link" href="{{ url_for('facility_detail', facility_id=f.id) }}">View details →</a>
+  </article>
+{% else %}
+  <p>No facilities found. Try another search or add a facility.</p>
+{% endfor %}
+</div>
+<p class="disclaimer">*Confidence is a simple demonstration score based on record freshness and report count, not a validated AI prediction. Sample records are fictional. Water safety cannot be determined from appearance or cleanliness score alone.</p>
+{% endblock %}

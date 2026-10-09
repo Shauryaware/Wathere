@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<a class="back" href="{{ url_for('index') }}">← Back to facilities</a>
+<article class="detail-card">
+  <span class="type-tag">{{ "DRINKING WATER" if facility.facility_type == "Water" else "PUBLIC TOILET" }}</span>
+  <h1>{{ facility.name }}</h1>
+  <p class="muted">{{ facility.address }}</p>
+  <div class="metrics">
+    <div><strong>{{ facility.cleanliness_score }}/100</strong><span>Reported cleanliness</span></div>
+    <div><strong>{{ facility.operational_status }}</strong><span>Reported status</span></div>
+    <div><strong>{{ facility.confidence }}%</strong><span>Info confidence*</span></div>
+  </div>
+  <p><b>Last verified:</b> {{ facility.last_verified }} ({{ facility.freshness }})</p>
+  <p><b>Coordinates:</b> {{ facility.latitude }}, {{ facility.longitude }}</p>
+  {% if facility.facility_type == "Water" %}<p><b>Water quality:</b> {{ facility.water_quality }}</p>{% endif %}
+  {% if facility.notes %}<p><b>Notes:</b> {{ facility.notes }}</p>{% endif %}
+  <a class="button" href="{{ url_for('report_issue', facility_id=facility.id) }}">Report an issue</a>
+</article>
+<section class="reports">
+  <h2>Community reports ({{ reports|length }})</h2>
+  {% for r in reports %}
+    <article class="report">
+      <b>{{ r.issue_type }}</b><span class="small">{{ r.created_at }}</span>
+      <p>{{ r.description }}</p>
+      {% if r.image_filename %}<p><a href="{{ url_for('static', filename='../uploads/' + r.image_filename) }}">Uploaded image filename: {{ r.image_filename }}</a></p>{% endif %}
+    </article>
+  {% else %}
+    <p class="muted">No reports submitted yet.</p>
+  {% endfor %}
+</section>
+<p class="disclaimer">*Demonstration score only. Reports need verification. Clean appearance does not prove drinking water is safe.</p>
+{% endblock %}
